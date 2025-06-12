@@ -67,7 +67,7 @@ To deploy the Groovy Console as an embedded package you need to update your `pom
    <dependency>
      <groupId>be.orbinson.aem</groupId>
      <artifactId>aem-groovy-console-all</artifactId>
-     <version>19.0.3</version>
+     <version>19.0.8</version>
      <type>zip</type>
    </dependency>
    ```
