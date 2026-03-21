@@ -132,7 +132,24 @@ OSGi configuration page.
 | Audit Disabled?                 | Disables auditing of script execution history.                                                                                    | `false`       |
 | Display All Audit Records?      | If enabled, all audit records (including records for other users) will be displayed in the console history.                       | `false`       |
 | Thread Timeout                  | Time in seconds that scripts are allowed to execute before being interrupted.  If 0, no timeout is enforced.                      | 0             |
-| Distributed execution enabled?  | If enabled, a script will be able to be replicated from an author and executed on all default replication agents.                 | `false`       |
+| Distributed execution enabled?  | If enabled, scripts saved under `/conf/groovyconsole/replication/` and replicated from author will be automatically executed on publish/preview instances. See [Distributed Execution](#distributed-execution-aemaacs-publishpreview). | `false`       |
+
+## Distributed Execution (AEMaaCS Publish/Preview)
+
+In AEM as a Cloud Service, publish and preview instances cannot be accessed individually. To execute write operations on
+publish/preview, the Groovy Console supports **distributed execution**: scripts are replicated from author and
+automatically executed on all publish instances.
+
+### How it works
+
+1. Enable **Distributed execution enabled?** in
+   the [OSGi configuration](http://localhost:4502/system/console/configMgr/be.orbinson.aem.groovy.console.configuration.impl.DefaultConfigurationService)
+   on **both author and publish/preview**.
+2. Write your script in the console on **author**.
+3. Click the dropdown arrow next to the **Run Script** button and select **"Run script on all publish instances"**.
+4. The console automatically saves the script to `/conf/groovyconsole/replication/`, replicates it to all publish
+   instances, and the `ReplicatedScriptListener` on each publish instance executes it upon arrival.
+
 
 ## Batch script execution
 
