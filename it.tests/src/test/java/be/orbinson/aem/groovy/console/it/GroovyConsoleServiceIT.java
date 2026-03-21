@@ -14,11 +14,11 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -34,22 +34,20 @@ class GroovyConsoleServiceIT {
     private static CloseableHttpClient httpClient;
 
     @BeforeAll
-    static void beforeAll() {
+    static void setUp() {
         httpClient = HttpClients.createDefault();
+
+        // Wait for the Sling Starter and the Groovy Console content package to be fully installed
+        await().atMost(120, TimeUnit.SECONDS)
+                .pollInterval(5, TimeUnit.SECONDS)
+                .untilAsserted(() -> assertTrue(isHealthy(), "System not healthy"));
     }
 
     @AfterAll
-    static void afterAll() throws IOException {
+    static void tearDown() throws IOException {
         if (httpClient != null) {
             httpClient.close();
         }
-    }
-
-    @BeforeEach
-    void beforeEach() {
-        await().atMost(30, TimeUnit.SECONDS)
-                .pollInterval(5, TimeUnit.SECONDS)
-                .untilAsserted(() -> assertTrue(servicesAreAvailable()));
     }
 
     @Test
@@ -177,17 +175,17 @@ class GroovyConsoleServiceIT {
         assertEquals("{\"a\":1}", response.get("result").getAsString());
     }
 
-    private static boolean servicesAreAvailable() throws IOException {
-        HttpGet healthCheck = new HttpGet(BASE_URL + "/system/health.json?tags=systemalive,bundles");
-        healthCheck.addHeader("Authorization", AUTH_HEADER);
-        try (CloseableHttpResponse response = httpClient.execute(healthCheck)) {
-            String body = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            try {
+    private static boolean isHealthy() {
+        try {
+            HttpGet healthCheck = new HttpGet(BASE_URL + "/system/health.json?tags=systemalive,groovyconsole");
+            healthCheck.addHeader("Authorization", AUTH_HEADER);
+            try (CloseableHttpResponse response = httpClient.execute(healthCheck)) {
+                String body = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
                 JsonObject jsonResponse = JsonParser.parseString(body).getAsJsonObject();
                 return "OK".equals(jsonResponse.get("overallResult").getAsString());
-            } catch (JsonSyntaxException e) {
-                return false;
             }
+        } catch (Exception e) {
+            return false;
         }
     }
 

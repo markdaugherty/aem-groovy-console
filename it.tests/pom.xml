@@ -63,7 +63,7 @@
                     <plugin>
                         <groupId>org.apache.sling</groupId>
                         <artifactId>slingfeature-maven-plugin</artifactId>
-                        <version>1.8.4</version>
+                        <version>1.9.4</version>
                         <extensions>true</extensions>
                         <executions>
                             <execution>
@@ -79,16 +79,12 @@
                                                 <artifactId>org.apache.sling.starter</artifactId>
                                                 <classifier>oak_tar</classifier>
                                                 <type>slingosgifeature</type>
-                                                <version>13</version>
+                                                <version>14</version>
                                             </includeArtifact>
                                             <filesInclude>*.json</filesInclude>
-                                            <artifactsOverrides>
-                                                <artifactsOverride>org.apache.groovy:*:HIGHEST</artifactsOverride>
-                                                <artifactsOverride>*:*:HIGHEST</artifactsOverride>
-                                            </artifactsOverrides>
                                         </aggregate>
                                     </aggregates>
-                                    <replacePropertyVariables>groovy.version</replacePropertyVariables>
+                                    <replacePropertyVariables>project.version</replacePropertyVariables>
                                 </configuration>
                             </execution>
                             <execution>
@@ -102,7 +98,7 @@
                     <plugin>
                         <groupId>org.apache.sling</groupId>
                         <artifactId>feature-launcher-maven-plugin</artifactId>
-                        <version>0.1.6</version>
+                        <version>1.0.4</version>
                         <configuration>
                             <launches>
                                 <launch>
@@ -144,7 +140,6 @@
                         <configuration>
                             <systemPropertyVariables>
                                 <HTTP_PORT>${http.port}</HTTP_PORT>
-                                <build.log.file>${project.build.directory}/../build.log</build.log.file>
                             </systemPropertyVariables>
                         </configuration>
                         <executions>

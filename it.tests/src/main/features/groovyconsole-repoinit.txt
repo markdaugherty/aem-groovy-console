@@ -1,7 +1,0 @@
-create path /conf/groovyconsole/replication(sling:Folder)
-create path /var/groovyconsole/audit(sling:Folder)
-
-create service user aem-groovy-console-service with path system/aem-groovy-console
-set ACL for aem-groovy-console-service
-    allow jcr:all on /
-end
