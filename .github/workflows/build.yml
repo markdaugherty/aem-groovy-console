@@ -1,17 +1,6 @@
 name: Build
 
-on:
-  # Trigger on push to develop or main branches
-  push:
-    branches:
-      - develop
-      - main
-
-  # Trigger on pull request (any branch that creates a PR)
-  pull_request:
-    branches:
-      - develop
-      - main
+on: [push, pull_request]
 
 jobs:
   build:
@@ -19,16 +8,16 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: 17
 
       - name: Cache local Maven repository
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -39,7 +28,7 @@ jobs:
         run: mvn --batch-mode --update-snapshots install
 
       - name: Integration tests
-        run: mvn --batch-mode clean verify -pl it.tests -Pit
+        run: mvn --batch-mode verify -pl it.tests -Pit
 
       # Save logs only if the job fails
       - name: Upload logs on failure

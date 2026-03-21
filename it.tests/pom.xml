@@ -82,6 +82,10 @@
                                                 <version>13</version>
                                             </includeArtifact>
                                             <filesInclude>*.json</filesInclude>
+                                            <artifactsOverrides>
+                                                <artifactsOverride>org.apache.groovy:*:HIGHEST</artifactsOverride>
+                                                <artifactsOverride>*:*:HIGHEST</artifactsOverride>
+                                            </artifactsOverrides>
                                         </aggregate>
                                     </aggregates>
                                     <replacePropertyVariables>groovy.version</replacePropertyVariables>

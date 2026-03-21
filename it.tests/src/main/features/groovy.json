@@ -3,6 +3,26 @@
     {
       "id": "org.apache.groovy:groovy-dateutil:${groovy.version}",
       "start-order": "20"
+    },
+    {
+      "id": "org.apache.groovy:groovy-json:${groovy.version}",
+      "start-order": "20"
+    },
+    {
+      "id": "org.apache.groovy:groovy-xml:${groovy.version}",
+      "start-order": "20"
+    },
+    {
+      "id": "org.apache.groovy:groovy-templates:${groovy.version}",
+      "start-order": "20"
+    },
+    {
+      "id": "org.apache.groovy:groovy-nio:${groovy.version}",
+      "start-order": "20"
+    },
+    {
+      "id": "org.apache.groovy:groovy-yaml:${groovy.version}",
+      "start-order": "20"
     }
   ]
 }
