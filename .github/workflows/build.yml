@@ -8,16 +8,16 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: 17
 
       - name: Cache local Maven repository
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -26,3 +26,14 @@ jobs:
 
       - name: Build
         run: mvn --batch-mode --update-snapshots install
+
+      - name: Integration tests
+        run: mvn --batch-mode verify -pl it.tests -Pit
+
+      # Save logs only if the job fails
+      - name: Upload logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: failure-logs
+          path: it.tests/target/launchers/model/logs/*
